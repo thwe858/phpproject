@@ -1,4 +1,29 @@
-<?php include '../config.php';?>
+<?php 
+    include '../config.php';
+    include '../../dbconnect.php';
+
+    if(isset($_GET['id'])){
+        $id=$_GET['id'];
+        $stmt=$pdo->prepare("SELECT * FROM categories WHERE id=:id");
+        $stmt->execute([
+            'id'=> $id
+        ]);
+        $category=$stmt->fetch(PDO:: FETCH_ASSOC);
+        //print_r($category);
+
+        if(isset($_SERVER['REQUEST_METHOD'])&& $_SERVER['REQUEST_METHOD']=='POST'){
+            $name=htmlspecialchars($_POST['categoryName']);
+            $stmt=$pdo->prepare("UPDATE categories SET name=:name WHERE id=:id");
+            $stmt->execute([
+                'name'=>$name,
+                'id'=> $_GET['id']
+            ]);
+            header('Location: list.php');
+        }
+
+
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -46,13 +71,16 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">Category Edit Page</h1>
-                    <a href="list.php" class="btn btn-primary">Back</a>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h1 class="h3 mb-4 text-gray-800">Category Update Page</h1>
+                        <a href="list.php" class="btn btn-primary">Back</a>
+                    </div>
 
                     <form action="#" method="post">
                         <div class="form-group">
                             <label for="name">Name</label><br>
-                            <input type="text" placeholder="Enter Category Name" class="from-control w-50" value='IT'>
+                            <input type="text" placeholder="Enter Category Name" class="from-control w-50"
+                                name="categoryName" id="name" required value="<?= $category['name']?>">
                         </div>
                         <button type="submit" class="btn btn-primary">Update</button>
                     </form>

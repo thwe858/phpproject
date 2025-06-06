@@ -1,15 +1,19 @@
 <?php 
-include '../config.php';
+
 include '../../dbconnect.php';
 
 if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD']=='POST'){
-    $name=htmlspecialchars($_POST['categoryName']);
-    $stmt=$pdo->prepare("INSERT INTO categories (name) VALUES (:name)");
+    $Tests=htmlspecialchars($_POST['Tests']);
+    $status=$_POST ['status'];
+    $stmt=$pdo->prepare("INSERT INTO todo (Tests, Status) VALUES (:test,:status)");
     $stmt->execute([
-        'name'=>$name
+        'test'=>$Tests,
+        'status'=>$status
     ]);
     header('Location: list.php');
 }
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,7 +45,7 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD']=='POST'){
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <?php include '../sidebar.php'; ?>
+        <?php include 'sidebar.php'; ?>
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -51,7 +55,7 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD']=='POST'){
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include '../navbar.php'; ?>
+                <?php include 'navbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -59,15 +63,22 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD']=='POST'){
 
                     <!-- Page Heading -->
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h1 class="h3 mb-4 text-gray-800">Category Add Page</h1>
+                        <h1 class="h3 mb-4 text-success">Plan For Your Dreams!</h1>
                         <a href="list.php" class="btn btn-primary">Back</a>
                     </div>
 
                     <form action="#" method="post">
                         <div class="form-group">
-                            <label for="name">Category name</label><br>
-                            <input type="text" placeholder="Enter Category Name" class="from-control w-50"
-                                name="categoryName" id="name" require>
+                            <label for="name">Tests name</label><br>
+                            <input type="text" placeholder="Enter your Tests" class="from-control w-50" name="Tests"
+                                id="Tests" require>
+                            <label for=""></label>
+                            <select name="status" id="status">
+                                <option value="To Do">To Do</option>
+                                <option value="Completed">Completed</option>
+                                <option value="In progresss">In Progress</option>
+                                <option value="Noted">Noted</option>
+                            </select>
                         </div>
                         <button type="submit" class="btn btn-primary">Save</button>
                     </form>
@@ -78,7 +89,7 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD']=='POST'){
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include'../footer.php'?>
+
             <!-- End of Footer -->
 
         </div>

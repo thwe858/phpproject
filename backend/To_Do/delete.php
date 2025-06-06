@@ -1,10 +1,10 @@
 <?php 
     
-    include '../../dbconnect.php';
+    include 'dbconnect.php';
     
     if(isset($_GET['id'])){
    $id=$_GET['id'];
-    $stmt=$pdo->prepare("DELETE FROM categories WHERE id=:id");
+    $stmt=$pdo->prepare("DELETE FROM todo WHERE id=:id");
     $stmt->execute([
         'id'=>$id
     ]);

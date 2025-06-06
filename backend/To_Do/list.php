@@ -1,15 +1,5 @@
 <?php 
-include '../config.php';
-include '../../dbconnect.php';
-
-if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD']=='POST'){
-    $name=htmlspecialchars($_POST['categoryName']);
-    $stmt=$pdo->prepare("INSERT INTO categories (name) VALUES (:name)");
-    $stmt->execute([
-        'name'=>$name
-    ]);
-    header('Location: list.php');
-}
+    include 'dbconnect.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,7 +31,7 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD']=='POST'){
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <?php include '../sidebar.php'; ?>
+        <?php include 'sidebar.php'; ?>
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -51,7 +41,7 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD']=='POST'){
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include '../navbar.php'; ?>
+                <?php include 'navbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -59,18 +49,43 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD']=='POST'){
 
                     <!-- Page Heading -->
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h1 class="h3 mb-4 text-gray-800">Category Add Page</h1>
-                        <a href="list.php" class="btn btn-primary">Back</a>
+                        <h1 class="h3 mb-4 text-gray-800">Do IT Now </h1>
+                        <a href="add.php" class="btn btn-primary">Add Tests</a>
                     </div>
 
-                    <form action="#" method="post">
-                        <div class="form-group">
-                            <label for="name">Category name</label><br>
-                            <input type="text" placeholder="Enter Category Name" class="from-control w-50"
-                                name="categoryName" id="name" require>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </form>
+                    <table class="table table_bordered table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>No</th>
+                                <th>Tests Name</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                                $stmt = $pdo->query("SELECT * FROM todo ORDER BY id DESC");
+                                $tests= $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            //    print_r($tests); 
+                               $i=1;
+                               foreach($tests as $tests):
+                            ?>
+                            <tr>
+                                <td><?= $i++; ?></td>
+                                <td><?= $tests['Tests'] ?></td>
+                                <td><?= $tests['Status'] ?></td>
+
+                                <td>
+                                    <a href="edit.php" class="btn btn-primary"> Edit</a>
+                                    <a href="delete.php?id=<?= $tests['id'] ?>"
+                                        onclick="return confirm('Are you sure you want to delete?')"
+                                        class="btn btn-danger"> Delete</a>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+
+                        </tbody>
+                    </table>
                 </div>
                 <!-- /.container-fluid -->
 
@@ -78,7 +93,7 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD']=='POST'){
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include'../footer.php'?>
+
             <!-- End of Footer -->
 
         </div>
