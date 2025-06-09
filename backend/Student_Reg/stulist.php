@@ -58,7 +58,7 @@ $i=1;
                 <h4 class="text-center mb-4">My Panel</h4>
                 <a href="#"><i class="fa-solid fa-house text-success"></i> Dashboard</a>
                 <a href="#"><i class="fa-solid fa-plus text-success"></i> Register Student</a>
-                <a href="#"><i class="fa-solid fa-table-list text-success"> </i> Student List</a>
+                <a href=""><i class="fa-solid fa-table-list text-success"> </i> Student List</a>
                 <a href="#"><i class="fa-regular fa-gear text-success"></i> Settings</a>
             </div>
 
@@ -67,7 +67,7 @@ $i=1;
                 <!-- Navbar -->
                 <nav class="navbar navbar-light bg-white border-bottom shadow-sm px-4">
                     <span class="navbar-brand mb-0 h4">Student List</span>
-                    <img src="../images/login_user.png" alt="Login" class="profile-img">
+                    <img src="images/admin.png" alt="Login" class="profile-img">
                 </nav>
 
                 <!-- Table Area -->
@@ -103,7 +103,7 @@ $i=1;
                                         <td><?= htmlspecialchars($stu['address']) ?></td>
                                         <td>
                                             <a href="stuedit.php?id=<?= $stu['id'] ?>" class="btn btn-primary"> Edit</a>
-                                            <a href="delete.php?id=<?= $stu['id'] ?>"
+                                            <a href="studelete.php?id=<?= $stu['id'] ?>"
                                                 onclick="return confirm('Are you sure you want to delete?')"
                                                 class="btn btn-danger"> Delete</a>
                                         </td>

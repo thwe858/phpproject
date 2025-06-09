@@ -70,7 +70,7 @@ if (isset($_SERVER['REQUEST_METHOD'])&&$_SERVER['REQUEST_METHOD'] == 'POST') {
                 <h4 class="text-center mb-4">My Panel</h4>
                 <a href="#"><i class="fa-solid fa-house text-success"></i> Dashboard</a>
                 <a href="#"><i class="fa-solid fa-plus text-success"></i> Register Student</a>
-                <a href="#"><i class="fa-solid fa-table-list text-success"> </i> Student List</a>
+                <a href="stulist.php"><i class="fa-solid fa-table-list text-success"> </i> Student List</a>
                 <a href="#"><i class="fa-regular fa-gear text-success"></i> Settings</a>
             </div>
 
