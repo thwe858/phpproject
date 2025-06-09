@@ -87,6 +87,7 @@ $i=1;
                                         <th>Phone</th>
                                         <th>Gender</th>
                                         <th>Address</th>
+                                        <th>Action</th>
 
                                     </tr>
                                 </thead>
@@ -100,6 +101,12 @@ $i=1;
                                         <td><?= htmlspecialchars($stu['phone']) ?></td>
                                         <td><?= htmlspecialchars($stu['gender']) ?></td>
                                         <td><?= htmlspecialchars($stu['address']) ?></td>
+                                        <td>
+                                            <a href="stuedit.php?id=<?= $stu['id'] ?>" class="btn btn-primary"> Edit</a>
+                                            <a href="delete.php?id=<?= $stu['id'] ?>"
+                                                onclick="return confirm('Are you sure you want to delete?')"
+                                                class="btn btn-danger"> Delete</a>
+                                        </td>
                                     </tr>
                                     <?php endforeach; ?>
                                 </tbody>
