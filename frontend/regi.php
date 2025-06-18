@@ -1,40 +1,38 @@
 <?php
-include '../dbconnect.php';
-session_start();
-if(isset($_SESSION['login'])){
-    header('Location:profile.php');
-    exit();
-    
-}
-if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD']=='POST'){
-    $email=htmlspecialchars($_POST['userEmail']);
-    $password=htmlspecialchars($_POST['userPassword']);
+include "../dbconnect.php";
+$message = '';
 
-    // echo $email . ','. $password;
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $name = htmlspecialchars($_POST['userName']);
+    $email = htmlspecialchars($_POST['userEmail']);
+    $password = htmlspecialchars($_POST['userPassword']);
+    $confirmPassword = htmlspecialchars($_POST['userConfirmPassword']);
 
-    $stmt=$pdo->prepare("SELECT * FROM users WHERE email=:email");
-    $stmt->execute([
-        'email'=>$email
+    if ($password !== $confirmPassword) {
+        $message = "Passwords do not match.";
+    } else {
+        // Check if email already exists in users table
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
+        $stmt->execute(['email' => $email]);
+        $user = $stmt->fetch();
 
-    ]);
-    $user=$stmt->fetch();
-    if($user){
-        if(password_verify($password,$user['password'])){
-            $_SESSION['user']=$user;
-            $_SESSION['login']=true;
-            // session_start();
-            // $_SESSION['user']=$user;
-            header('Location:index.php');
-        }else{
-            header('location:login.php');
-
+        if ($user) {
+            $message = "This email is already in the database.";
+        } else {
+            // Insert new user
+            $hashPassword = password_hash($password, PASSWORD_DEFAULT);
+            $insertStmt = $pdo->prepare("INSERT INTO users(name, email, password) VALUES (:name, :email, :password)");
+            $insertStmt->execute([
+                'name' => $name,
+                'email' => $email,
+                'password' => $hashPassword
+            ]);
+            $message = "Registration successful!";
         }
-    }
-    else{
-        header('location :login.php');
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -68,12 +66,16 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD']=='POST'){
         <div class="row justify-content-md-center">
             <!-- Blog entries-->
             <div class="col-lg-6">
-                <h3>Log In</h3>
+                <h3>Register</h3>
                 <form action="" method="post" class="p-4 p-md-5 border rounded-3 bg-light">
-
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingInputName" placeholder="Mg Mg"
+                            name="userName">
+                        <label for="floatingInputNmae">Name</label>
+                    </div>
                     <div class="form-floating mb-3">
                         <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com"
-                            name="userEmail">
+                            name='userEmail'>
                         <label for="floatingInput">Email address</label>
                     </div>
                     <div class="form-floating mb-3">
@@ -82,9 +84,14 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD']=='POST'){
                         <label for="floatingPassword">Password</label>
                     </div>
 
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" id="floatingConfirmPassword"
+                            placeholder="ConfirmPassword" name="userConfirmPassword">
+                        <label for="floatingConfirmPassword">Confirm Password</label>
+                    </div>
 
                     <div class="d-grid gap-2">
-                        <button class="btn btn-primary" type="submit">login</button>
+                        <button class="btn btn-primary" type="submit">Register</button>
                     </div>
                 </form>
             </div>

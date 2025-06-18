@@ -73,6 +73,18 @@
                                // print_r($categories); 
                                $i=1;
                                foreach($posts as $post):
+                                $color="";
+                                if($post['status']=='published'){
+                                    $color='text-primary';
+
+                                }else if($post['status']=='rejected'){
+                                    $color='text-danger';
+
+                                }
+                                else if($post['status']=='created'){
+                                    $color='text-success';
+                                    
+                                }
                             ?>
                             <tr>
                                 <td><?= $i++; ?></td>
@@ -80,8 +92,8 @@
                                 <td><?= $post['author_name'] ?></td>
                                 <td><?= $post['category_name'] ?></td>
                                 <td>
-                                    <?= $post['status'] ?>
-                                    <p> <?= $post['created_at'] ?></p>
+                                    <strong class="<?= $color ?>"><?=$post['status']?></strong>
+                                    <p><?= $post['created_at']?></p>
                                 </td>
                                 <td>
                                     <a href="detail.php?id=<?= $post['id'] ?>" class="btn btn-primary"> Details </a>

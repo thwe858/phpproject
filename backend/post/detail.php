@@ -66,6 +66,15 @@
                     </div>
                     <div class="card mb-3">
                         <!-- <img src="..." class="card-img-top" alt="..."> -->
+                        <?php if($post['status']=='created'): ?>
+                        <div class='card-header'>
+                            <a onclick="return confirm('are you sure you to public?')"
+                                href="edit.php?id=<?= $post['id']?>&key=publish" class="btn btn-danger">Public</a>
+                            <a onclick="return confirm('are you sure you to public?')"
+                                href="edit.php?id=<?= $post['id']?>&key=reject" class="btn btn-danger">Reject</a>
+
+                        </div>
+                        <?php endif; ?>
                         <div class="card-body">
                             <h5 class="card-title"><?= $post['title']?></h5>
                             <p class="card-text"><small
